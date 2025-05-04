@@ -1,0 +1,23 @@
+version = 1
+revision = 2
+requires-python = ">=3.9"
+
+[[package]]
+name = "rez"
+version = "3.2.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/33/52/c4e763d1005b5df4963f10af7f8a77aeeb16cfd11dba0de47c3776d26829/rez-3.2.1.tar.gz", hash = "sha256:f74559499ac12f09b54f0caf9f0c54db70675ef8c8f84dd1dd08ee487be7959d", size = 2000129, upload-time = "2024-10-27T16:59:03.941Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/df/82/91d27b8c78698a6d669abc89d3bdc2bf63bf7f05ef10f2941bae9460bf52/rez-3.2.1-py3-none-any.whl", hash = "sha256:f411f75662a3ddf06941cb9579869768b117f9bb744d428e1146b1afc999fb51", size = 2261106, upload-time = "2024-10-27T16:59:01.736Z" },
+]
+
+[[package]]
+name = "rez-nushell-plugin"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "rez" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "rez", specifier = ">=3.2.1" }]
