@@ -49,13 +49,13 @@ class Nushell(Shell):
         """
         Prepend a value to an environment variable in Nushell.
         """
-        self._addline(f"$env.{key} = ($env.{key} | prepend '{value}'")
+        self._addline(f"$env.{key} = ($env.{key} | prepend \"{value}\"")
 
     def appendenv(self, key, value):
         """
         Append a value to an environment variable in Nushell.
         """
-        self._addline(f"$env.{key} = ($env.{key} | append '{value}')")
+        self._addline(f"$env.{key} = ($env.{key} | append \"{value}\")")
 
     def alias(self, key, value):
         """
