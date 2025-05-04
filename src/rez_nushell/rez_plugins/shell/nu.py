@@ -61,4 +61,3 @@ class Nushell(Shell):
         Returns:
             tuple: 4-tuple representing applied value of each option.
         """
-        
