@@ -21,25 +21,25 @@ This project is a plugin for the Rez package management system, enabling integra
    git clone https://github.com/doubleailes/rez_nushell_plugin.git
    ```
 
-2. Navigate to the project directory:
+2. Set the plugin path::
 
-   ```bash
-   cd rez_nushell_plugin
-   ```
+   Set the `REZ_PLUGIN_PATH` environment variable to include the path to this plugin.
+   You can do this by adding the following line to your shell configuration file.
+   The path should point to the `rez_nushell` directory in the cloned repository.
 
-3. Install the plugin:
-
-   ```bash
-   rez-bind --install .
+   ```nushell
+   $env.REZ_PLUGIN_PATH = '~/rez_nushell_plugin/src/rez_nushell/'
    ```
 
 ## Usage
 
-Once installed, you can use Rez with Nushell by specifying `nu` as the shell type. For example:
+Once set, you can use Rez with Nushell by specifying `nu` as the shell type. For example:
 
 ```bash
-rez-env my_package --shell nu
+rez-env my_package -- shell nu
 ```
+
+Or simply use rez commands as you would in any other shell in a Nushell session.
 
 ## Development
 
