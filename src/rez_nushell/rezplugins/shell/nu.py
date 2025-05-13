@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Rez Project
 
+
+"""
+Nushell
+"""
+
 import os
 import re
 
