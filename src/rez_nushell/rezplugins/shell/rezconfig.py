@@ -1,4 +1,1 @@
-nu = {
-    "prompt": '> $ ',
-    "executable_fullpath": None
-}
+nu = {"prompt": "> $ ", "executable_fullpath": None}

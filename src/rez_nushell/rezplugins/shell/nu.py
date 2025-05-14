@@ -17,6 +17,7 @@ from rez.utils.platform_ import platform_
 from rez.util import shlex_join
 from rez.system import system
 
+
 class Nushell(Shell):
     expand_env_vars = True
     syspaths = None
@@ -28,7 +29,6 @@ class Nushell(Shell):
             ]
         )
     )
-
 
     def __test_env_var__(self, var) -> bool:
         return bool(self.ENV_VAR_REGEX.match(var))
@@ -43,9 +43,9 @@ class Nushell(Shell):
 
     @classmethod
     def startup_capabilities(cls, rcfile=False, norc=False, stdin=False, command=False):
-        cls._unsupported_option('rcfile', rcfile)
-        cls._unsupported_option('norc', norc)
-        cls._unsupported_option('stdin', stdin)
+        cls._unsupported_option("rcfile", rcfile)
+        cls._unsupported_option("norc", norc)
+        cls._unsupported_option("stdin", stdin)
         rcfile = False
         norc = False
         stdin = False
@@ -53,7 +53,9 @@ class Nushell(Shell):
 
     @classmethod
     def get_startup_sequence(cls, rcfile, norc, stdin, command):
-        rcfile, norc, stdin, command = cls.startup_capabilities(rcfile, norc, stdin, command)
+        rcfile, norc, stdin, command = cls.startup_capabilities(
+            rcfile, norc, stdin, command
+        )
         return dict(
             stdin=stdin,
             command=command,
@@ -61,7 +63,7 @@ class Nushell(Shell):
             envvar=None,
             files=[],
             bind_files=[],
-            source_bind_files=(not norc)
+            source_bind_files=(not norc),
         )
 
     @classmethod
@@ -77,38 +79,50 @@ class Nushell(Shell):
     def _bind_interactive_rez(self):
         if config.set_prompt and self.settings.prompt:
             self._addline(f"$env.PROMPT_INDICATOR = '{self.settings.prompt}'")
-    
+
     def expand_vars(self, values: list[str]):
         """Generate Nushell environment conversion configuration script.
-        
+
         Creates Nushell ENV_CONVERSIONS settings that handle proper conversion
         of environment variables between string and structured formats. This is
         particularly important for path-like variables that need special handling.
-        
+
         Args:
             values: List of environment variable names to configure conversions for
-        
+
         Returns:
             String containing Nushell script for environment variable conversions
         """
         expand_list: list[str] = list()
         self._addline("$env.ENV_CONVERSIONS = {")
         for value in values:
-            t = f"    \"{value}\":"
+            t = f'    "{value}":'
             t += " {"
             self._addline(t)
             self._addline("        from_string: { |s| $s | split row (char esep) }")
-            self._addline("        to_string: { |v| $v | path expand | str join (char esep) }")
+            self._addline(
+                "        to_string: { |v| $v | path expand | str join (char esep) }"
+            )
             self._addline("    }")
         self._addline("}")
 
     def _remove_banner(self):
         self._addline("$env.config.show_banner = false")
 
-    def spawn_shell(self, context_file, tmpdir, rcfile=None, norc=False, stdin=False,
-                    command=None, env=None, quiet=False, pre_command=None,
-                    add_rez=True, **Popen_args):
-
+    def spawn_shell(
+        self,
+        context_file,
+        tmpdir,
+        rcfile=None,
+        norc=False,
+        stdin=False,
+        command=None,
+        env=None,
+        quiet=False,
+        pre_command=None,
+        add_rez=True,
+        **Popen_args,
+    ):
         startup_sequence = self.get_startup_sequence(rcfile, norc, stdin, command)
         shell_command = None
 
@@ -125,17 +139,23 @@ class Nushell(Shell):
             # Add this line to disable the banner
             ex.interpreter._remove_banner()
             # This handle the conversion of environment variables
-            ex.interpreter.expand_vars(["PYTHONPATH","PATH", "LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH"])
+            ex.interpreter.expand_vars(
+                ["PYTHONPATH", "PATH", "LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH"]
+            )
 
-        executor = RexExecutor(interpreter=self.new_shell(),
-                               parent_environ={},
-                               add_default_namespaces=False)
+        executor = RexExecutor(
+            interpreter=self.new_shell(),
+            parent_environ={},
+            add_default_namespaces=False,
+        )
 
         if startup_sequence["command"] is not None:
             _record_shell(executor, files=startup_sequence["files"])
             shell_command = startup_sequence["command"]
         else:
-            _record_shell(executor, files=startup_sequence["files"], print_msg=(not quiet))
+            _record_shell(
+                executor, files=startup_sequence["files"], print_msg=(not quiet)
+            )
         code = executor.get_output()
         target_file = os.path.join(tmpdir, f"rez-shell.{self.file_extension()}")
         with open(target_file, "w") as f:
@@ -143,8 +163,12 @@ class Nushell(Shell):
 
         cmd = []
         if pre_command:
-            cmd = pre_command if isinstance(pre_command, (tuple, list)) else pre_command.split()
-        cmd += [self.executable, "--config" ,target_file]
+            cmd = (
+                pre_command
+                if isinstance(pre_command, (tuple, list))
+                else pre_command.split()
+            )
+        cmd += [self.executable, "--config", target_file]
         if shell_command:
             cmd.extend(["-c", shell_command])
         return Popen(cmd, env=env, **Popen_args)
@@ -155,7 +179,7 @@ class Nushell(Shell):
         result = ""
         for is_literal, txt in value.strings:
             if is_literal:
-                txt = txt.replace('"', '\\"').replace('$', '\\$')
+                txt = txt.replace('"', '\\"').replace("$", "\\$")
             else:
                 if is_path:
                     txt = self.normalize_path(txt)
@@ -188,15 +212,15 @@ class Nushell(Shell):
         self._addline(f"alias {key} = {value}")
 
     def comment(self, value):
-        for line in value.split('\\n'):
+        for line in value.split("\\n"):
             self._addline(f"# {line}")
 
     def info(self, value):
-        for line in value.split('\\n'):
+        for line in value.split("\\n"):
             self._addline(f"print {self.escape_string(line)}")
 
     def error(self, value):
-        for line in value.split('\\n'):
+        for line in value.split("\\n"):
             self._addline(f"error make {self.escape_string(line)}")
 
     def source(self, value):
@@ -219,6 +243,7 @@ class Nushell(Shell):
     @classmethod
     def join(cls, command):
         return shlex_join(command)
+
 
 def register_plugin():
     return Nushell
