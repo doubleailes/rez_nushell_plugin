@@ -11,7 +11,7 @@ import re
 
 from rez.shells import Shell
 from rez.config import config
-from rez.rex import RexExecutor, OutputStyle, EscapedString
+from rez.rex import RexExecutor, EscapedString
 from rez.utils.execution import Popen
 from rez.utils.platform_ import platform_
 from rez.util import shlex_join
@@ -93,7 +93,6 @@ class Nushell(Shell):
         Returns:
             String containing Nushell script for environment variable conversions
         """
-        expand_list: list[str] = list()
         self._addline("$env.ENV_CONVERSIONS = {")
         for value in values:
             t = f'    "{value}":'
