@@ -16,6 +16,7 @@ from rez.utils.execution import Popen
 from rez.utils.platform_ import platform_
 from rez.util import shlex_join
 from rez.system import system
+from rezplugins.shell._utils.windows import to_windows_path
 
 
 class Nushell(Shell):
@@ -187,7 +188,10 @@ class Nushell(Shell):
         return f'"{result}"'
 
     def normalize_path(self, path):
-        return path.replace("\\\\", "/") if platform_.name == "windows" else path
+        if platform_.name == "windows":
+            return to_windows_path(path)
+        else:
+            return path
 
     def setenv(self, key, value):
         value = self.escape_string(value, is_path=self._is_pathed_key(key))
