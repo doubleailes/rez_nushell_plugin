@@ -80,7 +80,7 @@ class Nushell(Shell):
         if config.set_prompt and self.settings.prompt:
             self._addline(f"$env.PROMPT_INDICATOR = '{self.settings.prompt}'")
 
-    def expand_vars(self, values: list[str]):
+    def _expand_vars(self, values: list[str]):
         """Generate Nushell environment conversion configuration script.
 
         Creates Nushell ENV_CONVERSIONS settings that handle proper conversion
@@ -138,7 +138,7 @@ class Nushell(Shell):
             # Add this line to disable the banner
             ex.interpreter._remove_banner()
             # This handle the conversion of environment variables
-            ex.interpreter.expand_vars(
+            ex.interpreter._expand_vars(
                 ["PYTHONPATH", "PATH", "LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH"]
             )
 
