@@ -1,5 +1,5 @@
 # This workflow uses uv to install dependencies and run pytest
-ame: Test with uv and pytest
+name: Test with uv and pytest
 
 on:
   push:
