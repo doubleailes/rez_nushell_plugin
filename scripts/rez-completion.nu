@@ -1,0 +1,12 @@
+rez search -h
+rez selftest -h
+rez status -h
+rez suite -h
+rez test -h
+rez view -h
+rez yaml2py -h
+rez bundle -h
+rez benchmark -h
+rez pkg-ignore -h
+rez mv -h
+rez rm -h

@@ -1,6 +1,6 @@
 [project]
 name = "rez_nushell"
-version = "0.1.1"
+version = "0.1.2"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -11,7 +11,4 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "pytest>=8.3.5",
-    "rez>=3.2.1",
-]
+dev = ["pytest>=8.3.5", "rez>=3.2.1"]

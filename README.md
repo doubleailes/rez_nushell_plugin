@@ -6,6 +6,7 @@ This project is a plugin for the Rez package management system, enabling integra
 
 - Provides support for using Rez with Nushell.
 - Implements environment variable handling specific to Nushell.
+- Nushell comppletion support for Rez commands.
 
 ## Requirements
 
@@ -21,14 +22,22 @@ This project is a plugin for the Rez package management system, enabling integra
    git clone https://github.com/doubleailes/rez_nushell_plugin.git
    ```
 
-2. Set the plugin path::
+2. Set the plugin path:
 
    Set the `REZ_PLUGIN_PATH` environment variable to include the path to this plugin.
    You can do this by adding the following line to your shell configuration file.
    The path should point to the `rez_nushell` directory in the cloned repository.
 
    ```nushell
-   $env.REZ_PLUGIN_PATH = '~/rez_nushell_plugin/src/rez_nushell/'
+   $env.REZ_PLUGIN_PATH = './src/rez_nushell/'
+   ```
+
+3. Optional:
+   You can add autocompletion for Rez commands in Nushell by adding the following line
+   to your Nushell configuration file:
+
+   ```nushell
+   source ./rez-completions.nu
    ```
 
 ## Usage
