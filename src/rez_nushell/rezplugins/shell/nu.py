@@ -16,7 +16,7 @@ from rez.utils.execution import Popen
 from rez.utils.platform_ import platform_
 from rez.util import shlex_join
 from rez.system import system
-from rezplugins.shell._utils.windows import to_windows_path
+from rezplugins.shell._utils.windows import to_windows_path, get_syspaths_from_registry
 
 
 class Nushell(Shell):
@@ -71,10 +71,15 @@ class Nushell(Shell):
     def get_syspaths(cls):
         if cls.syspaths is not None:
             return cls.syspaths
+
         if config.standard_system_paths:
             cls.syspaths = config.standard_system_paths
             return cls.syspaths
-        cls.syspaths = os.environ["PATH"].split(os.pathsep)
+
+        paths = get_syspaths_from_registry()
+
+        cls.syspaths = [x for x in paths if x]
+
         return cls.syspaths
 
     def _bind_interactive_rez(self):
