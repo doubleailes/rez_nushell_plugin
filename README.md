@@ -1,18 +1,23 @@
 # Rez Nushell Plugin
 
-This project is a plugin for the Rez package management system, enabling integration with [Nushell](https://www.nushell.sh/), a modern shell designed for structured data.
+This project is a plugin for the [Rez](https://github.com/AcademySoftwareFoundation/rez)
+package management system, enabling integration with [Nushell](https://www.nushell.sh/)
+, a modern shell designed for structured data.
 
 ## Features
 
-- Provides support for using Rez with Nushell.
-- Implements environment variable handling specific to Nushell.
-- Nushell comppletion support for Rez commands.
+- Provides support for using **Rez** with **Nushell**.
+- Implements environment variable handling specific to **Nushell**.
+- **Nushell** completion support for Rez commands.
+
+The plugin is feature-complete with **PowerShellBase**, even though it doesn't
+inherit from that class.
 
 ## Requirements
 
 - Python >= 3.9
 - Rez >= 3.2.1
-- Nushell installed on your system
+- Nushell >= 0.96
 
 ## Installation
 
@@ -29,20 +34,20 @@ This project is a plugin for the Rez package management system, enabling integra
    The path should point to the `rez_nushell` directory in the cloned repository.
 
    ```nushell
-   $env.REZ_PLUGIN_PATH = './src/rez_nushell/'
+   $env.REZ_PLUGIN_PATH = '<PATHOFTHEREPOSITORY>/src/rez_nushell/'
    ```
 
 3. Optional:
-   You can add autocompletion for Rez commands in Nushell by adding the following line
-   to your Nushell configuration file:
+   You can add autocompletion for Rez commands in **Nushell** by adding the following line
+   to your **Nushell** configuration file:
 
    ```nushell
-   source ./rez-completions.nu
+   source <PATHOFTHEREPOSITORY>/rez-completions.nu
    ```
 
 ## Usage
 
-Once set, you can use Rez with Nushell by specifying `nu` as the shell type. For example:
+Once set, you can use Rez with **Nushell** by specifying `nu` as the shell type. For example:
 
 ```bash
 rez-env my_package -- shell nu
@@ -60,8 +65,8 @@ To contribute to this project:
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
-This plugin is inspired by the Rez project and aims to extend its functionality to support modern shells like Nushell.
+This plugin is inspired by the **Rez** project and aims to extend its functionality to support modern shells like Nushell.
