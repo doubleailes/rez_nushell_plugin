@@ -13,7 +13,6 @@ from rez.shells import Shell
 from rez.config import config
 from rez.rex import RexExecutor, EscapedString
 from rez.utils.execution import Popen
-from rez.utils.platform_ import platform_
 from rez.util import shlex_join
 from rez.system import system
 from rezplugins.shell._utils.windows import to_windows_path, get_syspaths_from_registry
@@ -76,7 +75,7 @@ class Nushell(Shell):
             cls.syspaths = config.standard_system_paths
             return cls.syspaths
 
-        if platform_.startswith('win'):
+        if system.platform.startswith('win'):
             paths = get_syspaths_from_registry()
         else:
             paths = os.environ['PATH'].split(os.pathsep)
@@ -196,7 +195,7 @@ class Nushell(Shell):
         return f'"{result}"'
 
     def normalize_path(self, path):
-        if platform_.name == "windows":
+        if system.platform == "windows":
             return to_windows_path(path)
         else:
             return path
