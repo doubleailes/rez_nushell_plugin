@@ -41,14 +41,12 @@ def test_expand_vars(monkeypatch):
     assert lines[-1] == "}"
 
 def test_normalize_path_windows(monkeypatch):
-    class MockPlatform:
-        name = "windows"
-    monkeypatch.setattr("rez_nushell.rezplugins.shell.nu.platform_", MockPlatform)
+    monkeypatch.setattr("rez.system.system.platform", "windows")
     shell = Nushell()
     assert shell.normalize_path("C:/foo/bar") == "C:\\foo\\bar"
 
 def test_normalize_path_linux(monkeypatch):
-    monkeypatch.setattr("rez.utils.platform_.platform_.name", "linux")
+    monkeypatch.setattr("rez.system.system.platform", "linux")
     shell = Nushell()
     assert shell.normalize_path("/foo/bar") == "/foo/bar"
 
