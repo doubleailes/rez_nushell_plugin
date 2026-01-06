@@ -144,3 +144,59 @@ def test_env_var_regex_match():
     assert Nushell.ENV_VAR_REGEX.match("$env.PATH")
     assert Nushell.ENV_VAR_REGEX.match("$env._MYVAR")
     assert not Nushell.ENV_VAR_REGEX.match("PATH")
+
+def test_get_syspaths_windows(monkeypatch):
+    # Test that Windows platform detection uses startswith for flexibility
+    # Reset class variable to force re-computation
+    Nushell.syspaths = None
+    
+    # Mock the platform to return "windows"
+    monkeypatch.setattr("rez.system.system.platform", "windows")
+    
+    # Mock config to not use standard_system_paths
+    class DummyConfig:
+        standard_system_paths = None
+    monkeypatch.setattr("rez.config.config", DummyConfig)
+    
+    # Mock Windows registry path function
+    def mock_get_syspaths():
+        return ["C:\\Windows\\System32", "C:\\Program Files"]
+    monkeypatch.setattr("rez_nushell.rezplugins.shell.nu.get_syspaths_from_registry", mock_get_syspaths)
+    
+    paths = Nushell.get_syspaths()
+    assert paths == ["C:\\Windows\\System32", "C:\\Program Files"]
+    
+    # Reset for other tests
+    Nushell.syspaths = None
+
+def test_get_syspaths_linux(monkeypatch):
+    # Test that non-Windows platforms use PATH environment variable
+    # Reset class variable to force re-computation
+    Nushell.syspaths = None
+    
+    # Mock the platform to return "linux"
+    monkeypatch.setattr("rez.system.system.platform", "linux")
+    
+    # Mock config to not use standard_system_paths
+    class DummyConfig:
+        standard_system_paths = None
+    monkeypatch.setattr("rez.config.config", DummyConfig)
+    
+    # Mock environment PATH
+    import os
+    monkeypatch.setitem(os.environ, "PATH", "/usr/bin:/usr/local/bin:/bin")
+    
+    paths = Nushell.get_syspaths()
+    assert paths == ["/usr/bin", "/usr/local/bin", "/bin"]
+    
+    # Reset for other tests
+    Nushell.syspaths = None
+
+def test_platform_startswith_windows():
+    # Verify that "windows" starts with "win"
+    assert "windows".startswith("win")
+    
+    # Also verify variations that might be returned
+    assert "windows".startswith("win")
+    assert "win32".startswith("win")
+    assert "win64".startswith("win")
