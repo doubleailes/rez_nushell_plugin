@@ -197,6 +197,5 @@ def test_platform_startswith_windows():
     assert "windows".startswith("win")
     
     # Also verify variations that might be returned
-    assert "windows".startswith("win")
     assert "win32".startswith("win")
     assert "win64".startswith("win")
