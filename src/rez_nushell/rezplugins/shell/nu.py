@@ -75,7 +75,7 @@ class Nushell(Shell):
             cls.syspaths = config.standard_system_paths
             return cls.syspaths
 
-        if system.platform.startswith('win'):
+        if system.platform.startswith("win"):
             paths = get_syspaths_from_registry()
         else:
             paths = os.environ['PATH'].split(os.pathsep)
